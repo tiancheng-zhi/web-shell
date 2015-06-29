@@ -1,0 +1,18 @@
+html {
+	font-family: monospace;
+	font-size: 16px;
+	background-color: #000;
+}
+
+#shell {
+	color: #0F0;
+	white-space: pre;
+}
+
+@-webkit-keyframes blink {
+	50% { visibility: hidden; }
+}
+#cursor {
+	background-color: #CC0;
+	-webkit-animation: blink 1s step-end infinite;
+}

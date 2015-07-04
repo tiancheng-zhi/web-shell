@@ -14,6 +14,7 @@ from check_answer import *
 class ShellWebSocket(tornado.websocket.WebSocketHandler):
     def open(self):
         print("WebSocket opened")
+        self.command = ""
 
         self.shell = tornado.process.Subprocess(["bash", "-i"],
             stdin=tornado.process.Subprocess.STREAM,
@@ -34,6 +35,10 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         if len(message) == 1:
             self.shell.stdin.write(message.encode())
+            self.command = self.command + message
+            if message == "\r":
+                if self.command.find("myedit", 0, 8):
+                    self.command.
         if True:
             pass
 
@@ -41,7 +46,7 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket closed")
         if self.shell.proc.poll() == None:
             self.shell.proc.kill()
-        #self.shell.proc.wait()
+        self.shell.proc.wait()
 
 '''
     处理文件编辑的接口:edit
@@ -84,7 +89,7 @@ class FileSaveHandler(tornado.web.RequestHandler):
 
 class TutorialEditHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        fp = open("tutorial/" + d[0] + ".html")                                 #本地打开文件
+        fp = open("tutorial/" + d[0] + ".html")         #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
             self.render("index.html",tutorial_content = all_the_text, file_edit = False)
@@ -107,18 +112,25 @@ class InitHandler(tornado.web.RequestHandler):
 
     def post(self):
         pass
+
+class ShellHandler(tornado.web.RequestHandler):
+    def get(self, *d):
+        pass
+
+    def post(self):
+        line = selft.get_argument('line','')
+        print(line)
         
 '''
     配置URL映射关系
-    /shell/[^/]*/[^/]* : shell的接口
+    /url : shell的每一行输入
     /edit : edit的接口
     /save : save的接口
 '''
 
 application = tornado.web.Application([
     ("/tutorial/([0-9]+)", TutorialEditHandler),
-    ("/shell", ShellWebSocket),             
-    ("/edit", FileEditHandler),
+    ("/url", ShellHandler),    
     ("/save", FileSaveHandler),
     ("/()", InitHandler),
     ("/(.*)", tornado.web.StaticFileHandler, {

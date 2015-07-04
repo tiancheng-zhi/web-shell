@@ -77,18 +77,18 @@ echo ${#color}
 </ul>
 <h2>数组</h2>
 <p>下面的指令定义了数组：</p>
-<pre><code>$ a=(0 1 2 3)
+<pre><code>a=(0 1 2 3)
 </code></pre>
 <p>访问数组的某个元素：</p>
-<pre><code>$ echo ${a[2]}
+<pre><code>echo ${a[2]}
 </code></pre>
 <p>访问整个数组：</p>
-<p>$ echo ${a[@]}</p>
+<p>echo ${a[@]}</p>
 <p>或者</p>
-<pre><code>$ echo ${a[*]}
+<pre><code>echo ${a[*]}
 </code></pre>
 <p>获取数组的长度：</p>
-<pre><code>$ echo ${#a[@]}
+<pre><code>echo ${#a[@]}
 </code></pre>
 <h2>思考题</h2>
 <p>请写一个名为<code>my.sh</code>的Shell脚本，其接受2个参数，并输出第2个参数和后缀“s”。</p>

@@ -12,13 +12,7 @@ from check_answer import *
     WebSocket协议
 '''
 class ShellWebSocket(tornado.websocket.WebSocketHandler):
-    def open(self,*d):
-        print(d);
-        if len(d) == 2:
-            userid = d[0]
-            challenge_num = d[1]
-        checkAnswer = CheckAnswer(challenge_num);
-
+    def open(self):
         print("WebSocket opened")
 
         self.shell = tornado.process.Subprocess(["bash", "-i"],
@@ -123,7 +117,7 @@ class InitHandler(tornado.web.RequestHandler):
 
 application = tornado.web.Application([
     ("/tutorial/([0-9]+)", TutorialEditHandler),
-    ("/shell/([^/]*)/([^/]*)", ShellWebSocket),             
+    ("/shell", ShellWebSocket),             
     ("/edit", FileEditHandler),
     ("/save", FileSaveHandler),
     ("/()", InitHandler),

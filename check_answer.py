@@ -13,8 +13,7 @@ class CheckAnswer:
 
 	# check the answer of question 0
 	def __check_func0(self, input_cmd, output_rst):
-		r = re.compile(r'^\s*echo\s+\\"Hello World!\\"\s*$')
-		if (r.match(input_cmd)):
+		if (output_rst == '"Hello World!"'):
 			return True
 		else:
 			return False

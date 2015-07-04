@@ -13,6 +13,7 @@ from check_answer import *
 '''
 class ShellWebSocket(tornado.websocket.WebSocketHandler):
     def open(self,*d):
+        print(d);
         if len(d) == 2:
             userid = d[0]
             challenge_num = d[1]
@@ -86,6 +87,19 @@ class FileSaveHandler(tornado.web.RequestHandler):
         fp.write(content)
         fp.close()
         pass
+
+class TutorialEditHandler(tornado.web.RequestHandler):
+    def get(self, *d):
+        fp = open("tutorial/" + d[0] + ".html")                                 #本地打开文件
+        try:
+            all_the_text = fp.read()                    #读取文件内容
+            self.render("index.html",tutorial_content = all_the_text)
+        finally:
+            fp.close()
+        pass
+
+    def post(self):
+        pass
         
 '''
     配置URL映射关系
@@ -95,7 +109,7 @@ class FileSaveHandler(tornado.web.RequestHandler):
 '''
 
 application = tornado.web.Application([
-    ("/tutorial", 
+    ("/tutorial/([0-9]+)", TutorialEditHandler),
     ("/shell/([^/]*)/([^/]*)", ShellWebSocket),             
     ("/edit", FileEditHandler),
     ("/save", FileSaveHandler),

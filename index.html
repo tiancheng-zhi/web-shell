@@ -3,7 +3,7 @@
 <head>
 	<title>Web Shell</title>
 	<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.4.1/css/amazeui.min.css"/>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="am-g" style="height: 100%">
@@ -19,6 +19,7 @@
 		</ul>
 	</div>
 	<div class="am-u-sm-5">
+	{% autoescape None %}
 		{{ tutorial_content }}
 	</div>
 	<div class="am-u-sm-6" style="height: 100%">
@@ -34,7 +35,7 @@
 		</div>
 	</div>
 </div>
-<script src="jquery-2.1.4.min.js"></script>
+<!--script src="jquery-2.1.4.min.js"></script-->
 <!--<script src="shell.js"></script>-->
 </body>
 </html>

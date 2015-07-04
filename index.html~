@@ -58,7 +58,7 @@
 	 return true;
 	 }*/
 	var controller = $('.console').console({
-		promptLabel: '$  ',
+		promptLabel: 'Demo> ',
 		commandValidate: function (line) {
 			if (line == "") return false;
 			else return true;

@@ -43,5 +43,24 @@
 </div>
 <script src="/jquery-2.1.4.min.js"></script>
 <script src="/shell.js"></script>
+<script type="text/javascript">
+	document.onkeydown = check;
+	function check(e) {
+		var code;
+		if (!e) var e = window.event;
+		if (e.keyCode) code = e.keyCode;
+		else if (e.which) code = e.which;
+		if (((event.keyCode == 8) &&
+			((event.srcElement.type != "text" &&
+			event.srcElement.type != "textarea" &&
+			event.srcElement.type != "password") ||
+			event.srcElement.readOnly == true))
+		) {
+			event.keyCode = 0;
+			event.returnValue = false;
+		}
+		return true;
+	}
+</script>
 </body>
 </html>

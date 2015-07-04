@@ -100,6 +100,19 @@ class TutorialEditHandler(tornado.web.RequestHandler):
 
     def post(self):
         pass
+
+class InitHandler(tornado.web.RequestHandler):
+    def get(self, *d):
+        fp = open("tutorial/0.html")                                 #本地打开文件
+        try:
+            all_the_text = fp.read()                    #读取文件内容
+            self.render("index.html",tutorial_content = all_the_text)
+        finally:
+            fp.close()
+        pass
+
+    def post(self):
+        pass
         
 '''
     配置URL映射关系
@@ -113,6 +126,7 @@ application = tornado.web.Application([
     ("/shell/([^/]*)/([^/]*)", ShellWebSocket),             
     ("/edit", FileEditHandler),
     ("/save", FileSaveHandler),
+    ("/()", InitHandler),
     ("/(.*)", tornado.web.StaticFileHandler, {
         "path": os.path.dirname(os.path.realpath(__file__)),
         "default_filename": "index.html",

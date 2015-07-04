@@ -59,7 +59,8 @@ class FileSaveHandler(tornado.web.RequestHandler):
 
 class TutorialEditHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        global all_the_text
+        global all_the_text, question_num
+        question_num = d[0]
         fp = open("tutorial/" + d[0] + ".html")         #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
@@ -98,8 +99,10 @@ class ShellHandler(tornado.web.RequestHandler):
             ret = subprocess.check_output(line, shell = True)
             retStr = ret.decode()
 
+        question_num = 2
         check_ans_var = CheckAnswer(question_num)
         if check_ans_var.check_ans(line, retStr):
+            print("True")
             retStr += "\nPass\n"
 
         self.write(json.dumps({

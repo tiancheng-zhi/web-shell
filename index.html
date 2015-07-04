@@ -29,10 +29,10 @@
 			<div class="shell" style="height: 100%"><span id="shell"></span><span id="cursor">&nbsp;</span></div>
 		</div>
 		<div class="am-g" style="height: 50%">
-			<form class="am-form" action="" style="height: 100%">
+			<form class="am-form" action="/save" method="post" style="height: 100%">
 				{% if file_edit %}
 				<label for="file_editor" hidden="hidden"></label>
-				<textarea id="file_editor" name="file_editor" style="height: 90%"></textarea>
+				<textarea id="file_editor" name="file_content" style="height: 90%"></textarea>
 				<input type="submit"/>
 				{% end %}
 			</form>

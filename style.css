@@ -1,7 +1,11 @@
-html {
+.shell {
 	font-family: monospace;
 	font-size: 16px;
 	background-color: #000;
+}
+
+html, body {
+	height: 100%;
 }
 
 #shell {
@@ -10,8 +14,11 @@ html {
 }
 
 @-webkit-keyframes blink {
-	50% { visibility: hidden; }
+	50% {
+		visibility: hidden;
+	}
 }
+
 #cursor {
 	background-color: #CC0;
 	-webkit-animation: blink 1s step-end infinite;

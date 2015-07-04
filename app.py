@@ -93,7 +93,7 @@ class TutorialEditHandler(tornado.web.RequestHandler):
         fp = open("tutorial/" + d[0] + ".html")                                 #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text)
+            self.render("index.html",tutorial_content = all_the_text, file_edit = true)
         finally:
             fp.close()
         pass
@@ -103,10 +103,10 @@ class TutorialEditHandler(tornado.web.RequestHandler):
 
 class InitHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        fp = open("tutorial/0.html")                                 #本地打开文件
+        fp = open("tutorial/0.html")                    #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text)
+            self.render("index.html",tutorial_content = all_the_text, file_edit = true)
         finally:
             fp.close()
         pass

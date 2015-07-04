@@ -5,7 +5,11 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import tornado.process
-from check_answer import *
+from check_answer import * 
+import time 
+
+
+filename = "tmp.txt"
 
 '''
     处理shell的接口
@@ -16,6 +20,11 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
         self.command = ""
 
+        self.shell = tornado.process.Subprocess(["bash", "-i"],
+            stdin=tornado.process.Subprocess.STREAM,
+            stdout=tornado.process.Subprocess.STREAM,
+            stderr=subprocess.STDOUT
+        )
         def read_callback(data):
             #self.write_message(json.dumps({
             #    'type': 'output',
@@ -71,7 +80,6 @@ class FileSaveHandler(tornado.web.RequestHandler):
         pass
 
     def post(self):
-        filename = self.get_argument('filename','')     #获取filename
         content = self.get_argument('content','')       #获取content
         fp = open(filename,'w')                         #写文件
         fp.write(content)
@@ -105,12 +113,35 @@ class InitHandler(tornado.web.RequestHandler):
         pass
 
 class ShellHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
     def get(self, *d):
-        line = self.get_argument('line','')
-        print(line)
+        if not hasattr(ShellHandler, "shell"):
+            ShellHandler.shell = tornado.process.Subprocess(["bash", "-i"],
+                stdin=tornado.process.Subprocess.STREAM,
+                stdout=tornado.process.Subprocess.STREAM,
+                stderr=subprocess.STDOUT
+            )
+            print("server opened")
+
+            def read_callback(data):
+                print("-------")
+                self.write(data)
+                ShellHandler.sdata = data
+                ShellHandler.shell.stdout.read_bytes(4096, read_callback, partial=True)
+
+           # ShellHandler.shell.set_exit_callback(lambda p: self.close())
+            ShellHandler.shell.stdout.read_bytes(4096, read_callback, partial=True)
+
+        line = self.get_argument('line', '')
+        line = line + "\n"
+        ShellHandler.shell.stdin.write(line.encode())
 
     def post(self):
-        pass        
+        pass       
+
+    def on_finish(self):
+        print("*******")
+        pass 
 '''
     配置URL映射关系
     /url : shell的每一行输入
@@ -130,5 +161,8 @@ application = tornado.web.Application([
 ], debug=True)
 
 if __name__ == "__main__":
+
     application.listen(3000)                            #监听3000端口
-    tornado.ioloop.IOLoop.current().start()             
+    tornado.ioloop.IOLoop.current().start()   
+    
+

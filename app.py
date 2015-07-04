@@ -5,43 +5,15 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import tornado.process
-from check_answer import *
+from check_answer import * 
+import time 
+import subprocess
 
-'''
-    处理shell的接口
-    WebSocket协议
-'''
-class ShellWebSocket(tornado.websocket.WebSocketHandler):
-    def open(self):
-        print("WebSocket opened")
 
-        self.shell = tornado.process.Subprocess(["bash", "-i"],
-            stdin=tornado.process.Subprocess.STREAM,
-            stdout=tornado.process.Subprocess.STREAM,
-            stderr=subprocess.STDOUT
-        )
-        def read_callback(data):
-            #self.write_message(json.dumps({
-            #    'type': 'output',
-            #    'data': data,
-            #    }))
-            self.write_message(data)
-            self.shell.stdout.read_bytes(4096, read_callback, partial=True)
-
-        self.shell.set_exit_callback(lambda p: self.close())
-        self.shell.stdout.read_bytes(4096, read_callback, partial=True)
-
-    def on_message(self, message):
-        if len(message) == 1:
-            self.shell.stdin.write(message.encode())
-        if True:
-            pass
-
-    def on_close(self):
-        print("WebSocket closed")
-        if self.shell.proc.poll() == None:
-            self.shell.proc.kill()
-        #self.shell.proc.wait()
+filename = "tmp.txt"
+editFlag = 0
+all_the_text = ""
+question_num = 0
 
 '''
     处理文件编辑的接口:edit
@@ -75,19 +47,23 @@ class FileSaveHandler(tornado.web.RequestHandler):
         pass
 
     def post(self):
-        filename = self.get_argument('filename','')     #获取filename
-        content = self.get_argument('content','')       #获取content
+        global filename, editFlag
+        content = self.get_argument('file_content','')       #获取content
         fp = open(filename,'w')                         #写文件
         fp.write(content)
         fp.close()
+        print(content)
+        editFlag = 0
+        self.render("index.html",tutorial_content = all_the_text)
         pass
 
 class TutorialEditHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        fp = open("tutorial/" + d[0] + ".html")                                 #本地打开文件
+        global all_the_text
+        fp = open("tutorial/" + d[0] + ".html")         #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text, file_edit = False)
+            self.render("index.html",tutorial_content = all_the_text)
         finally:
             fp.close()
         pass
@@ -97,28 +73,55 @@ class TutorialEditHandler(tornado.web.RequestHandler):
 
 class InitHandler(tornado.web.RequestHandler):
     def get(self, *d):
+        global all_the_text
         fp = open("tutorial/0.html")                    #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text, file_edit = False)
+            self.render("index.html",tutorial_content = all_the_text)
         finally:
             fp.close()
         pass
 
     def post(self):
         pass
-        
+
+class ShellHandler(tornado.web.RequestHandler):
+    def get(self, *d):
+        global editFlag, filename, question_num
+        line = self.get_argument('line', '')
+        print(line)
+        if line.find("myedit") == 0:
+            editFlag = 1
+            filename = line[7:]
+            retStr = ""
+        else:
+            ret = subprocess.check_output(line, shell = True)
+            retStr = ret.decode()
+
+        check_ans_var = CheckAnswer(question_num)
+        if check_ans_var.check_ans(line, retStr):
+            retStr += "\nPass\n"
+
+        self.write(json.dumps({
+            'file_editor': editFlag,
+            'output': retStr,
+        }))
+
+    def post(self):
+        pass       
+
+    def on_finish(self):
+        pass 
 '''
     配置URL映射关系
-    /shell/[^/]*/[^/]* : shell的接口
+    /url : shell的每一行输入
     /edit : edit的接口
     /save : save的接口
 '''
 
 application = tornado.web.Application([
     ("/tutorial/([0-9]+)", TutorialEditHandler),
-    ("/shell", ShellWebSocket),             
-    ("/edit", FileEditHandler),
+    ("/shell", ShellHandler),    
     ("/save", FileSaveHandler),
     ("/()", InitHandler),
     ("/(.*)", tornado.web.StaticFileHandler, {
@@ -128,5 +131,8 @@ application = tornado.web.Application([
 ], debug=True)
 
 if __name__ == "__main__":
+
     application.listen(3000)                            #监听3000端口
-    tornado.ioloop.IOLoop.current().start()             
+    tornado.ioloop.IOLoop.current().start()   
+    
+

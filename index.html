@@ -18,21 +18,19 @@
 			<li><a href="/tutorial/6">重定向和管道</a></li>
 		</ul>
 	</div>
-	<div class="am-u-sm-6" style="height: 100%">
-		<div class="am-scrollable-vertical" style="height: 100%">
+	<div class="am-u-sm-6" style="height: 100%; padding-left: 0; padding-right: 0">
+		<div class="am-scrollable-vertical" style="height: 100%; padding-left: 0; padding-right: 0">
 			{% autoescape None %}
 			{{ tutorial_content }}
 		</div>
 	</div>
-	<div class="am-u-sm-5" style="height: 100%">
+	<div class="am-u-sm-5" style="height: 100%; padding-left: 0; padding-right: 0">
 		<div class="console" style="height: 50%;"></div>
-		<div class="am-g" style="height: 50%">
+		<div id="file_editor" class="am-g" style="height: 50%; margin-left: 0; margin-right: 0">
 			<form class="am-form" action="/save" method="post" style="height: 100%">
-				{% if file_edit %}
 				<label for="file_editor" hidden="hidden"></label>
 				<textarea id="file_editor" name="file_content" style="height: 90%"></textarea>
 				<input type="submit"/>
-				{% end %}
 			</form>
 		</div>
 	</div>
@@ -69,7 +67,10 @@
 				data: {line: line},
 				async: false
 			});
-			return [{msg: result.responseText, className:"jquery-console-message-value"}]
+			data = JSON.parse(result.responseText)
+			if (data["file_editor"] == 1) $("#file_editor").show();
+			else $("#file_editor").hide();
+			return [{msg: data["output"], className:"jquery-console-message-value"}]
 		},
 		autofocus: true,
 		animateScroll: true,
@@ -78,6 +79,11 @@
 			//return !line.match(/[a-z]+/) && keycode != '0'.charCodeAt(0);
 			return true;
 		}
+	});
+
+	$(document).ready(function(){
+		$("#file_editor").hide();
+
 	});
 </script>
 </body>

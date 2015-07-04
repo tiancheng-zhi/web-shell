@@ -41,7 +41,7 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket closed")
         if self.shell.proc.poll() == None:
             self.shell.proc.kill()
-        self.shell.proc.wait()
+        #self.shell.proc.wait()
 
 '''
     处理文件编辑的接口:edit

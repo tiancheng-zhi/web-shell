@@ -16,11 +16,6 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
         self.command = ""
 
-        self.shell = tornado.process.Subprocess(["bash", "-i"],
-            stdin=tornado.process.Subprocess.STREAM,
-            stdout=tornado.process.Subprocess.STREAM,
-            stderr=subprocess.STDOUT
-        )
         def read_callback(data):
             #self.write_message(json.dumps({
             #    'type': 'output',
@@ -35,10 +30,6 @@ class ShellWebSocket(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         if len(message) == 1:
             self.shell.stdin.write(message.encode())
-            self.command = self.command + message
-            if message == "\r":
-                if self.command.find("myedit", 0, 8):
-                    self.command.
         if True:
             pass
 
@@ -115,12 +106,11 @@ class InitHandler(tornado.web.RequestHandler):
 
 class ShellHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        pass
+        line = self.get_argument('line','')
+        print(line)
 
     def post(self):
-        line = selft.get_argument('line','')
-        print(line)
-        
+        pass        
 '''
     配置URL映射关系
     /url : shell的每一行输入
@@ -130,7 +120,7 @@ class ShellHandler(tornado.web.RequestHandler):
 
 application = tornado.web.Application([
     ("/tutorial/([0-9]+)", TutorialEditHandler),
-    ("/url", ShellHandler),    
+    ("/shell", ShellHandler),    
     ("/save", FileSaveHandler),
     ("/()", InitHandler),
     ("/(.*)", tornado.web.StaticFileHandler, {

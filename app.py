@@ -7,6 +7,7 @@ import tornado.websocket
 import tornado.process
 from check_answer import * 
 import time 
+import subprocess
 
 
 filename = "tmp.txt"
@@ -113,34 +114,18 @@ class InitHandler(tornado.web.RequestHandler):
         pass
 
 class ShellHandler(tornado.web.RequestHandler):
-    @tornado.web.asynchronous
     def get(self, *d):
-        if not hasattr(ShellHandler, "shell"):
-            ShellHandler.shell = tornado.process.Subprocess(["bash", "-i"],
-                stdin=tornado.process.Subprocess.STREAM,
-                stdout=tornado.process.Subprocess.STREAM,
-                stderr=subprocess.STDOUT
-            )
-            print("server opened")
-
-            def read_callback(data):
-                print("-------")
-                self.write(data)
-                ShellHandler.sdata = data
-                ShellHandler.shell.stdout.read_bytes(4096, read_callback, partial=True)
-
-           # ShellHandler.shell.set_exit_callback(lambda p: self.close())
-            ShellHandler.shell.stdout.read_bytes(4096, read_callback, partial=True)
 
         line = self.get_argument('line', '')
-        line = line + "\n"
-        ShellHandler.shell.stdin.write(line.encode())
+        if line == "edit":
+            pass
+        ret = subprocess.check_output(line, shell = True)
+        self.write(ret.decode())
 
     def post(self):
         pass       
 
     def on_finish(self):
-        print("*******")
         pass 
 '''
     配置URL映射关系

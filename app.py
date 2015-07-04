@@ -11,6 +11,8 @@ import subprocess
 
 
 filename = "tmp.txt"
+editFlag = 0
+all_the_text = ""
 
 '''
     处理shell的接口
@@ -81,18 +83,23 @@ class FileSaveHandler(tornado.web.RequestHandler):
         pass
 
     def post(self):
-        content = self.get_argument('content','')       #获取content
+        global filename, editFlag
+        content = self.get_argument('file_content','')       #获取content
         fp = open(filename,'w')                         #写文件
         fp.write(content)
         fp.close()
+        print(content)
+        editFlag = 0
+        self.render("index.html",tutorial_content = all_the_text)
         pass
 
 class TutorialEditHandler(tornado.web.RequestHandler):
     def get(self, *d):
+        global all_the_text
         fp = open("tutorial/" + d[0] + ".html")         #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text, file_edit = False)
+            self.render("index.html",tutorial_content = all_the_text)
         finally:
             fp.close()
         pass
@@ -102,10 +109,11 @@ class TutorialEditHandler(tornado.web.RequestHandler):
 
 class InitHandler(tornado.web.RequestHandler):
     def get(self, *d):
+        global all_the_text
         fp = open("tutorial/0.html")                    #本地打开文件
         try:
             all_the_text = fp.read()                    #读取文件内容
-            self.render("index.html",tutorial_content = all_the_text, file_edit = False)
+            self.render("index.html",tutorial_content = all_the_text)
         finally:
             fp.close()
         pass
@@ -115,12 +123,21 @@ class InitHandler(tornado.web.RequestHandler):
 
 class ShellHandler(tornado.web.RequestHandler):
     def get(self, *d):
-
+        global editFlag, filename
         line = self.get_argument('line', '')
-        if line == "edit":
-            pass
-        ret = subprocess.check_output(line, shell = True)
-        self.write(ret.decode())
+        print(line)
+        if line.find("myedit") == 0:
+            editFlag = 1
+            filename = line[7:]
+            retStr = ""
+        else:
+            ret = subprocess.check_output(line, shell = True)
+            retStr = ret.decode()
+
+        self.write(json.dumps({
+            'file_editor': editFlag,
+            'output': retStr,
+        }))
 
     def post(self):
         pass       

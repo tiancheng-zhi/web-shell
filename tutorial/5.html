@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1>命令</h1>
+<p>丰富的命令是Shell的特色之一。掌握常用的命令，可以使得完成某些任务变得轻松。</p>
+<h2>常用命令</h2>
+<p>这里列出一些常用命令和它们的功能，具体用法可以查阅相关手册</p>
+<ul>
+<li>man：查阅手册</li>
+<li>ls：查看目录</li>
+<li>cd：切换目录</li>
+<li>rm：删除文件</li>
+<li>cat：显示连接文件</li>
+<li>mv：移动文件</li>
+<li>cp：复制文件</li>
+<li>ln：创建链接，-s参数创建软链接，否则创建硬链接</li>
+<li>expr：表达式求值</li>
+<li>find：查找文件</li>
+<li>grep：利用正则表达式匹配文件内容</li>
+</ul>
+<h2>获取命令的输出</h2>
+<p>获取命令的输出可以使用<code>$()</code>或者<code></code> ``</p>
+<p>如：</p>
+<pre><code>x=$(ls)
+</code></pre>
+<p>这条指令将当前目录下的文件名存在了变量<code>x</code>中。</p>
+<p>另外一个例子：</p>
+<pre><code>x=`expr 1 + 2`
+</code></pre>
+<p>这条指令将1与2的和存入变量x。</p>
+<h2>思考题</h2>
+<p>写一个名为year.sh的脚本，带有一个参数，表示年份。若为闰年，输出"YES”，否则输出“NO”。</p>
+<p>执行<code>./year.sh 1900</code>。</p>
+<p>（你可以用我们提供的Web Shell和文本编辑器尝试完成思考题，若结果正确会提示）</p>
+</body>
+</html>

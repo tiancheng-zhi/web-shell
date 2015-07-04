@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1>开始Shell编程！</h1>
+<p>Shell 编程是Linux程序设计教学必不可少的一部分。本教程致力于让初学者快速入门Shell编程，掌握基本的语法和命令。本教程以Ubuntu下的bash为准。</p>
+<h2>Shell的Hello World程序</h2>
+<p>现在就来体验一下Shell吧～</p>
+<h3>命令行形式</h3>
+<p>按<code>Ctrl+Alt+T</code>进入终端（或者使用我们提供的Web Shell）, 输入如下命令：</p>
+<pre><code>$ echo "Hello World!"
+</code></pre>
+<p>echo指令可用于输出一行字符串。按下回车，终端就会显示<code>Hello World!</code>。</p>
+<h3>脚本文件形式</h3>
+<p>你也许会觉得上面那种直接输入命令的方式与其他一些语言不同（如C++等），但其实Shell脚本也可以以执行文件的方式运行。</p>
+<p>创建文件<code>hello.sh</code>，打开编辑器（也可以使用我们提供的文件编辑器），输入如下代码：</p>
+<pre><code>#!/bin/bash
+# Hello World
+echo "Hello World!"
+</code></pre>
+<p>上述代码的第一行表示执行时使用<code>/bin/bash</code>执行该脚本，第二行以<code>#</code>开头，是单行注释，第三行是输出<code>Hello World!</code>的代码。</p>
+<p>进入终端，输入以下命令：</p>
+<pre><code>$ bash hello.sh
+</code></pre>
+<p>就可以执行<code>hello.sh</code>脚本</p>
+<p>当然也可以有另一种方式：</p>
+<p>输入以下命令修改<code>hello.sh</code>的权限：</p>
+<pre><code>$ chmod a+x hello.sh
+</code></pre>
+<p>然后执行</p>
+<pre><code>$ ./hello.sh
+</code></pre>
+<p>同样可以执行Shell脚本。</p>
+<h2>思考题</h2>
+<p>请用echo指令输出<code>"Hello World!"</code>，注意引号要输出。（提示：转义字符）</p>
+<p>（你可以用我们提供的Web Shell尝试完成思考题，若正确会提示）</p>
+</body>
+</html>

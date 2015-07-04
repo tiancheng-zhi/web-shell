@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1>函数</h1>
+<p>Shell中函数定义的格式如下：</p>
+<pre><code>函数名 ()
+{
+    语句
+    return 返回值;
+}
+</code></pre>
+<p>函数的参数通过<code>$*</code>，<code>$@</code>，<code>$1</code>，<code>$2</code>等获取。</p>
+<p>下面是一个例子：</p>
+<pre><code>check_psw()
+{
+    if [ "$1" = "123456" ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+read x
+if check_psw "$x"
+then
+    echo "pass"
+else
+    echo "not pass"
+fi
+</code></pre>
+<p>这个例子中<code>check_psw</code>函数判断参数是否是<code>123456</code>，<code>S1</code>用来获得第一个参数。</p>
+<p>值得注意的是，返回值为0是真，为1是假。</p>
+<h2>思考题</h2>
+<p>写一个名为tom.sh的Shell脚本，带有一个参数是空格隔开的名和姓，要求用函数实现下面的功能：若名为”Tom“，则打印”OK“，否则打印姓。</p>
+<p>执行<code>./tom.sh Tom Black</code></p>
+<p>（你可以用我们提供的Web Shell和文本编辑器尝试完成思考题，若结果正确会提示）</p>
+</body>
+</html>

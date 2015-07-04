@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1>重定向和管道</h1>
+<h2>重定向</h2>
+<p>重定向可以改变输入或输出的文件。</p>
+<p>标准输出的重定向使用<code>&gt;</code>，如：</p>
+<pre><code>ps &gt; pro_stat.txt
+</code></pre>
+<p>将进程信息存到了pro_stat.txt文件中</p>
+<p>如果想在文件内容后面附加内容，可以使用<code>&gt;&gt;</code>。</p>
+<p>标准输入可以使用<code>&lt;</code>进行重定向。</p>
+<h2>管道</h2>
+<p>管道可以将一条指令的标准输入作为另一条指令的标准输出。</p>
+<p>管道使用<code>|</code>链接各条指令。</p>
+<p>下面的例子将文件信息按照文件的大小排序输出</p>
+<pre><code>ls -l | sort -k5
+</code></pre>
+<h2>思考题</h2>
+<pre><code>使用ls -l和sort -k5命令将文件信息按照文件的大小从小到达排序输出到文件fileinfo.txt。
+
+（你可以用我们提供的Web Shell尝试完成思考题，若正确会提示）
+</code></pre>
+</body>
+</html>

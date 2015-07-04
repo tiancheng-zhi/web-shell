@@ -18,21 +18,23 @@
 			<li><a href="/tutorial/6">重定向和管道</a></li>
 		</ul>
 	</div>
-	<div class="am-u-sm-5" style="height: 100%">
+	<div class="am-u-sm-6" style="height: 100%">
 		<div class="am-scrollable-vertical" style="height: 100%">
 			{% autoescape None %}
 			{{ tutorial_content }}
 		</div>
 	</div>
-	<div class="am-u-sm-6" style="height: 100%">
+	<div class="am-u-sm-5" style="height: 100%">
 		<div class="am-g" style="height: 50%">
 			<div class="shell" style="height: 100%"><span id="shell"></span><span id="cursor">&nbsp;</span></div>
 		</div>
 		<div class="am-g" style="height: 50%">
 			<form class="am-form" action="" style="height: 100%">
+				{% if file_edit %}
 				<label for="file_editor" hidden="hidden"></label>
 				<textarea id="file_editor" name="file_editor" style="height: 90%"></textarea>
 				<input type="submit"/>
+				{% end %}
 			</form>
 		</div>
 	</div>

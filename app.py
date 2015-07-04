@@ -13,43 +13,7 @@ import subprocess
 filename = "tmp.txt"
 editFlag = 0
 all_the_text = ""
-
-'''
-    处理shell的接口
-    WebSocket协议
-'''
-class ShellWebSocket(tornado.websocket.WebSocketHandler):
-    def open(self):
-        print("WebSocket opened")
-        self.command = ""
-
-        self.shell = tornado.process.Subprocess(["bash", "-i"],
-            stdin=tornado.process.Subprocess.STREAM,
-            stdout=tornado.process.Subprocess.STREAM,
-            stderr=subprocess.STDOUT
-        )
-        def read_callback(data):
-            #self.write_message(json.dumps({
-            #    'type': 'output',
-            #    'data': data,
-            #    }))
-            self.write_message(data)
-            self.shell.stdout.read_bytes(4096, read_callback, partial=True)
-
-        self.shell.set_exit_callback(lambda p: self.close())
-        self.shell.stdout.read_bytes(4096, read_callback, partial=True)
-
-    def on_message(self, message):
-        if len(message) == 1:
-            self.shell.stdin.write(message.encode())
-        if True:
-            pass
-
-    def on_close(self):
-        print("WebSocket closed")
-        if self.shell.proc.poll() == None:
-            self.shell.proc.kill()
-        self.shell.proc.wait()
+question_num = 0
 
 '''
     处理文件编辑的接口:edit
@@ -123,7 +87,7 @@ class InitHandler(tornado.web.RequestHandler):
 
 class ShellHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        global editFlag, filename
+        global editFlag, filename, question_num
         line = self.get_argument('line', '')
         print(line)
         if line.find("myedit") == 0:
@@ -133,6 +97,10 @@ class ShellHandler(tornado.web.RequestHandler):
         else:
             ret = subprocess.check_output(line, shell = True)
             retStr = ret.decode()
+
+        check_ans_var = CheckAnswer(question_num)
+        if check_ans_var.check_ans(line, retStr):
+            retStr += "\nPass\n"
 
         self.write(json.dumps({
             'file_editor': editFlag,

@@ -39,6 +39,7 @@ class Popen(subprocess.Popen):
         def send(self, input):
             if not self.stdin:
                 return None
+
             try:
                 x = msvcrt.get_osfhandle(self.stdin.fileno())
                 (errCode, written) = WriteFile(x, input)
@@ -84,8 +85,6 @@ class Popen(subprocess.Popen):
 
             try:
                 written = os.write(self.stdin.fileno(), input.encode())
-            finally:
-                pass
             except OSError as why:
                 if why[0] == errno.EPIPE: #broken pipe
                     return self._close('stdin')
@@ -139,18 +138,22 @@ def recv_some(p, t=.1, e=1, tr=5, stderr=0):
             y.append(r)
         else:
             time.sleep(max((x-time.time())/tr, 0))
-    ret = ''
-    return ret.encode().join(y)
+    return ''.encode().join(y)
     
 def send_all(p, data):
     while len(data):
         sent = p.send(data)
         if sent is None:
             raise Exception(message)
+        #data = buffer(data, sent)
         data = data[sent:]
 
 if __name__ == '__main__':
-    shell, commands, tail = ('sh', ('ls', 'echo HELLO WORLD'), '\n')
+    if sys.platform == 'win32':
+        shell, commands, tail = ('cmd', ('dir /w', 'echo HELLO WORLD'), '\r\n')
+    else:
+        shell, commands, tail = ('sh', ('ls', 'echo HELLO WORLD'), '\n')
+    
     a = Popen(shell, stdin=PIPE, stdout=PIPE)
     print(recv_some(a))
     for cmd in commands:

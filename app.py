@@ -60,7 +60,7 @@ class TutorialEditHandler(tornado.web.RequestHandler):
     def get(self, *d):
         global all_the_text, question_num
         fp = open("tutorial/" + d[0] + ".html")         #本地打开文件
-        question_num = d[0]
+        question_num = int(d[0])
         try:
             all_the_text = fp.read()                    #读取文件内容
             self.render("index.html",tutorial_content = all_the_text)

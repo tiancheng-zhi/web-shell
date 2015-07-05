@@ -97,7 +97,11 @@ class ShellHandler(tornado.web.RequestHandler):
         else:
             send_all(p, line + '\n')
             time.sleep(0.02)
-            ret = recv_some(p)
+            try:
+                ret = recv_some(p)
+            except Exception:
+                p = Popen('bash', stdin=PIPE, stdout=PIPE)
+                ret = recv_some(p)
             retStr = ret.decode()
             print(ret)
 
@@ -119,7 +123,12 @@ class ShellHandler(tornado.web.RequestHandler):
 class PwdHandler(tornado.web.RequestHandler):
     def get(self, *d):
         global p
-        send_all(p, 'pwd\n')
+        try:
+            send_all(p, 'pwd\n')
+        except Exception:
+            p = Popen('bash', stdin=PIPE, stdout=PIPE)
+            send_all(p, 'pwd\n')
+
         time.sleep(0.02)
         ret = recv_some(p)
         retStr = ret.decode()[:-1] + "$ "

@@ -1,0 +1,15 @@
+总用量 160
+-rw-rw-r-- 1 ztc ztc     0  7月  5 11:28 fileinfo.txt
+-rw-rw-r-- 1 ztc ztc    13  7月  4 18:29 requirements.txt
+-rw-rw-r-- 1 ztc ztc   176  7月  4 18:29 README.md
+-rw-rw-r-- 1 ztc ztc  2191  7月  5 11:06 check_answer.py~
+-rw-rw-r-- 1 ztc ztc  2206  7月  5 11:06 check_answer.py
+-rw-rw-r-- 1 ztc ztc 22272  7月  4 21:21 jquery-console.js
+-rw-rw-r-- 1 ztc ztc    25  7月  5 11:01 my.sh
+-rw-rw-r-- 1 ztc ztc  2983  7月  5 10:50 index.html
+drwxrwxr-x 2 ztc ztc  4096  7月  5 11:06 __pycache__
+drwxrwxr-x 2 ztc ztc  4096  7月  5 11:27 tutorial
+-rw-rw-r-- 1 ztc ztc  4181  7月  5 11:27 app.py
+-rw-rw-r-- 1 ztc ztc  4787  7月  5 03:14 wrap.py
+-rw-rw-r-- 1 ztc ztc 84345  7月  4 18:29 jquery-2.1.4.min.js
+-rw-rw-r-- 1 ztc ztc   965  7月  5 02:26 style.css

@@ -121,4 +121,4 @@ Shell中有一些我环境变量，一般用大写字母命名。常用的环境
 
 请写一个名为`my.sh`的Shell脚本，其接受2个参数，并输出第2个参数和后缀“s”。
 
-请执行`bash my.sh apple pear peach`。
+请执行`./my.sh apple pear peach`。

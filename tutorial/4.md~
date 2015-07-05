@@ -38,4 +38,4 @@ Shell中函数定义的格式如下：
 
 写一个名为tom.sh的Shell脚本，带有一个参数是空格隔开的名和姓，要求用函数实现下面的功能：若名为”Tom“，则打印”OK“，否则打印姓。
 
-执行`bash tom.sh Tom Black`。
+执行`./tom.sh Tom Black`。

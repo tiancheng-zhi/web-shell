@@ -62,4 +62,4 @@ Shell中for循环的格式为：
 
 写一个名为printeven.sh的Shell脚本，带有一个参数。输出小于该参数的所有非负偶数，每行一个数。（提示：seq命令可以获得数字列表）
 
-执行`bash printeven.sh 15`。
+执行`./printeven.sh 15`。

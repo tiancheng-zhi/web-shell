@@ -21,7 +21,6 @@ class CheckAnswer:
 	# check the answer of question 1
 	def __check_func1(self, input_cmd, output_rst):
 		r = re.compile(r'^\s*bash\s+my.sh\s+apple\s+pear\s+peach\s*$')
-		print ("ok")
 		print([input_cmd])
 		if (r.match(input_cmd) and output_rst == 'pears'):
 			return True

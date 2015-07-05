@@ -28,8 +28,8 @@
 		<div class="console" style="height: 50%;"></div>
 		<div id="file_editor" class="am-g" style="height: 50%; margin-left: 0; margin-right: 0">
 			<form class="am-form" action="/save" method="post" style="height: 100%">
-				<label for="file_editor" hidden="hidden"></label>
-				<textarea id="file_editor" name="file_content" style="height: 90%"></textarea>
+				<label for="file_text" hidden="hidden"></label>
+				<textarea id="file_text" name="file_content" style="height: 90%"></textarea>
 				<button type="submit">保存</button>
 			</form>
 		</div>
@@ -75,13 +75,15 @@
 			if (data["file_editor"] == 1) $("#file_editor").show();
 			else $("#file_editor").hide();
 
-	var symbol = $.ajax({
-		url: "/symbol",
-		async: false
-	});
-	controller.promptLabel=symbol.responseText;
+			var symbol = $.ajax({
+				url: "/symbol",
+				async: false
+			});
+			controller.promptLabel = symbol.responseText;
 
-			return [{msg: data["output"], className:"jquery-console-message-value"}]
+			$('#file_text').text(data["file_content"]);
+
+			return [{msg: data["output"], className: "jquery-console-message-value"}]
 		},
 		autofocus: true,
 		animateScroll: true,
@@ -92,7 +94,7 @@
 		}
 	});
 
-	$(document).ready(function(){
+	$(document).ready(function () {
 		$("#file_editor").hide();
 
 	});

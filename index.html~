@@ -30,7 +30,7 @@
 			<form class="am-form" action="/save" method="post" style="height: 100%">
 				<label for="file_editor" hidden="hidden"></label>
 				<textarea id="file_editor" name="file_content" style="height: 90%"></textarea>
-				<button type="submit">保存</button>
+				<button type="submit"></button>
 			</form>
 		</div>
 	</div>

@@ -13,6 +13,11 @@
 <p>指令执行区可以执行Shell指令。</p>
 <p>在指令执行区执行<code>myedit filename</code>命令即可在文件编辑区编辑文件。执行该指令后，指令执行区下方会出现文件编辑区，可以进行文件编辑并保存。</p>
 <p>若执行刚好符合思考题的要求，那么Web Terminal会显示通过信息。</p>
+<p>本网站的作者：曾鑫璐 智天成 刘当一</p>
+<h3>参考资料：</h3>
+<p>[1]  [英] Neil Mathew, Richard Stones.Linux程序设计[M]. 陈健，宋健建译.北京：人民邮电出版社，2010:15-77</p>
+<p>[2] http://www.runoob.com/linux/linux-shell.html</p>
+<p>[3] http://code.activestate.com/recipes/440554/</p>
 <h2>Shell的Hello World程序</h2>
 <p>现在就来体验一下Shell吧～</p>
 <h3>命令行形式</h3>
@@ -33,7 +38,7 @@ echo "Hello World!"
 </code></pre>
 <p>就可以执行<code>hello.sh</code>脚本</p>
 <p>当然也可以有另一种方式：</p>
-<p>输入以下命令修改<code>hello.sh</code>的权限：</p>
+<p>输入以下命令修改<code>hello.sh</code>的权限（chmod通常需要较高的权限，需要sudo，目前本网站的Web Terminal不支持sudo）：</p>
 <pre><code>$ chmod a+x hello.sh
 </code></pre>
 <p>然后执行</p>

@@ -12,8 +12,8 @@
 <p>下面的代码给变量<code>color</code>赋值：</p>
 <pre><code>color=red
 </code></pre>
-<p>注意，等号两边不能由空格。如果在等号两边添加了空格，<code>color</code>会被当做指令，从而发生错误。</p>
-<p>如果要赋的值中间由空格，就必须使用引号，如：</p>
+<p>注意，等号两边不能有空格。如果在等号两边添加了空格，<code>color</code>会被当做指令，从而发生错误。</p>
+<p>如果要赋的值中间有空格，就必须使用引号，如：</p>
 <pre><code>color="red color"
 </code></pre>
 <p>或者</p>
@@ -61,7 +61,7 @@ echo ${#color}
 </code></pre>
 <p>输出结果为<code>9</code>。</p>
 <h2>环境变量</h2>
-<p>Shell中有一些我环境变量，一般用大写字母命名。常用的环境变量有：</p>
+<p>Shell中有一些环境变量，一般用大写字母命名。常用的环境变量有：</p>
 <ul>
 <li><code>$PATH</code>：寻找命令的目录</li>
 <li><code>$IFS</code>：shell使用该环境变量分割输入 </li>

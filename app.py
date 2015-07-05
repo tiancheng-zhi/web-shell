@@ -95,12 +95,14 @@ class ShellHandler(tornado.web.RequestHandler):
             editFlag = 1
             filename = line[7:]
             retStr = ""
+            fp = open(filename, 'w')
+            fp.close()
             fp = open(filename)
             try:
                 file_content = fp.read()
             finally:
                 fp.close()
-        elif line.find("sudo") == 0:
+        elif line.find("sudo") != -1:
             retStr = "禁止使用sudo"
         else:
             send_all(p, line + '\n')

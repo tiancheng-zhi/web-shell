@@ -100,6 +100,8 @@ class ShellHandler(tornado.web.RequestHandler):
                 file_content = fp.read()
             finally:
                 fp.close()
+        elif line.find("sudo") == 0:
+            retStr = "禁止使用sudo"
         else:
             send_all(p, line + '\n')
             time.sleep(0.02)

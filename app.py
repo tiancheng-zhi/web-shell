@@ -13,6 +13,7 @@ filename = "tmp.txt"
 editFlag = 0
 all_the_text = ""
 question_num = 0
+path = "\\"
 
 '''
     处理文件编辑的接口:edit
@@ -87,15 +88,16 @@ class InitHandler(tornado.web.RequestHandler):
 
 class ShellHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        global editFlag, filename, question_num, p
+        global editFlag, filename, question_num, p, path
         line = self.get_argument('line', '')
         print(line)
         file_content = ""
         if line.find("myedit") == 0:
             editFlag = 1
             filename = line[7:]
+            filename = path + '/' + filename
             retStr = ""
-            fp = open(filename, 'w')
+            fp = open(filename, 'a')
             fp.close()
             fp = open(filename)
             try:
@@ -133,7 +135,7 @@ class ShellHandler(tornado.web.RequestHandler):
 
 class PwdHandler(tornado.web.RequestHandler):
     def get(self, *d):
-        global p
+        global p, path
         try:
             send_all(p, 'pwd\n')
         except Exception:
@@ -142,6 +144,7 @@ class PwdHandler(tornado.web.RequestHandler):
 
         time.sleep(0.02)
         ret = recv_some(p)
+        path = ret.decode()[:-1]
         retStr = ret.decode()[:-1] + "$ "
         self.write(retStr)
         pass

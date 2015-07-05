@@ -39,16 +39,11 @@ class Popen(subprocess.Popen):
         def send(self, input):
             if not self.stdin:
                 return None
-
             try:
                 x = msvcrt.get_osfhandle(self.stdin.fileno())
                 (errCode, written) = WriteFile(x, input)
             except ValueError:
                 return self._close('stdin')
-            except (subprocess.pywintypes.error, Exception), why:
-                if why[0] in (109, errno.ESHUTDOWN):
-                    return self._close('stdin')
-                raise
 
             return written
 
@@ -66,10 +61,6 @@ class Popen(subprocess.Popen):
                     (errCode, read) = ReadFile(x, nAvail, None)
             except ValueError:
                 return self._close(which)
-            except (subprocess.pywintypes.error, Exception), why:
-                if why[0] in (109, errno.ESHUTDOWN):
-                    return self._close(which)
-                raise
             
             if self.universal_newlines:
                 read = self._translate_newlines(read)
@@ -84,11 +75,9 @@ class Popen(subprocess.Popen):
                 return 0
 
             try:
-                written = os.write(self.stdin.fileno(), input)
-            except OSError, why:
-                if why[0] == errno.EPIPE: #broken pipe
-                    return self._close('stdin')
-                raise
+                written = os.write(self.stdin.fileno(), input.encode())
+            finally:
+                pass
 
             return written
 
@@ -138,26 +127,23 @@ def recv_some(p, t=.1, e=1, tr=5, stderr=0):
             y.append(r)
         else:
             time.sleep(max((x-time.time())/tr, 0))
-    return ''.join(y)
+    ret = ''
+    return ret.encode().join(y)
     
 def send_all(p, data):
     while len(data):
         sent = p.send(data)
         if sent is None:
             raise Exception(message)
-        data = buffer(data, sent)
+        data = data[sent:]
 
 if __name__ == '__main__':
-    if sys.platform == 'win32':
-        shell, commands, tail = ('cmd', ('dir /w', 'echo HELLO WORLD'), '\r\n')
-    else:
-        shell, commands, tail = ('sh', ('ls', 'echo HELLO WORLD'), '\n')
-    
+    shell, commands, tail = ('sh', ('ls', 'echo HELLO WORLD'), '\n')
     a = Popen(shell, stdin=PIPE, stdout=PIPE)
-    print recv_some(a),
+    print(recv_some(a))
     for cmd in commands:
         send_all(a, cmd + tail)
-        print recv_some(a),
+        print(recv_some(a))
     send_all(a, 'exit' + tail)
-    print recv_some(a, e=0)
+    print(recv_some(a, e=0))
     a.wait()

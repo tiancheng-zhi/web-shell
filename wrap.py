@@ -44,13 +44,10 @@ class Popen(subprocess.Popen):
                 (errCode, written) = WriteFile(x, input)
             except ValueError:
                 return self._close('stdin')
-<<<<<<< HEAD:xx.py
-=======
             except (subprocess.pywintypes.error, Exception) as why:
                 if why[0] in (109, errno.ESHUTDOWN):
                     return self._close('stdin')
                 raise
->>>>>>> 88ed6b74c699752168cd811e51a96e7a7169dc98:wrap.py
 
             return written
 
@@ -68,13 +65,10 @@ class Popen(subprocess.Popen):
                     (errCode, read) = ReadFile(x, nAvail, None)
             except ValueError:
                 return self._close(which)
-<<<<<<< HEAD:xx.py
-=======
             except (subprocess.pywintypes.error, Exception) as why:
                 if why[0] in (109, errno.ESHUTDOWN):
                     return self._close(which)
                 raise
->>>>>>> 88ed6b74c699752168cd811e51a96e7a7169dc98:wrap.py
             
             if self.universal_newlines:
                 read = self._translate_newlines(read)
@@ -90,15 +84,12 @@ class Popen(subprocess.Popen):
 
             try:
                 written = os.write(self.stdin.fileno(), input.encode())
-<<<<<<< HEAD:xx.py
             finally:
                 pass
-=======
             except OSError as why:
                 if why[0] == errno.EPIPE: #broken pipe
                     return self._close('stdin')
                 raise
->>>>>>> 88ed6b74c699752168cd811e51a96e7a7169dc98:wrap.py
 
             return written
 
@@ -148,22 +139,14 @@ def recv_some(p, t=.1, e=1, tr=5, stderr=0):
             y.append(r)
         else:
             time.sleep(max((x-time.time())/tr, 0))
-<<<<<<< HEAD:xx.py
     ret = ''
     return ret.encode().join(y)
-=======
-    return ''.encode().join(y)
->>>>>>> 88ed6b74c699752168cd811e51a96e7a7169dc98:wrap.py
     
 def send_all(p, data):
     while len(data):
         sent = p.send(data)
         if sent is None:
             raise Exception(message)
-<<<<<<< HEAD:xx.py
-=======
-        #data = buffer(data, sent)
->>>>>>> 88ed6b74c699752168cd811e51a96e7a7169dc98:wrap.py
         data = data[sent:]
 
 if __name__ == '__main__':

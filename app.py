@@ -90,10 +90,16 @@ class ShellHandler(tornado.web.RequestHandler):
         global editFlag, filename, question_num, p
         line = self.get_argument('line', '')
         print(line)
+        file_content = ""
         if line.find("myedit") == 0:
             editFlag = 1
             filename = line[7:]
             retStr = ""
+            fp = open(filename)
+            try:
+                file_content = fp.read()
+            finally:
+                fp.close()
         else:
             send_all(p, line + '\n')
             time.sleep(0.02)
@@ -112,6 +118,7 @@ class ShellHandler(tornado.web.RequestHandler):
         self.write(json.dumps({
             'file_editor': editFlag,
             'output': retStr,
+            'file_content': file_content,
         }))
 
     def post(self):

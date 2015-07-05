@@ -30,7 +30,7 @@
 			<form class="am-form" action="/save" method="post" style="height: 100%">
 				<label for="file_editor" hidden="hidden"></label>
 				<textarea id="file_editor" name="file_content" style="height: 90%"></textarea>
-				<button type="submit"></button>
+				<button type="submit">保存</button>
 			</form>
 		</div>
 	</div>
@@ -55,8 +55,12 @@
 	 }
 	 return true;
 	 }*/
+	var symbol = $.ajax({
+		url: "/symbol",
+		async: false
+	});
 	var controller = $('.console').console({
-		promptLabel: '$  ',
+		promptLabel: symbol.responseText,
 		commandValidate: function (line) {
 			if (line == "") return false;
 			else return true;
@@ -70,6 +74,13 @@
 			data = JSON.parse(result.responseText)
 			if (data["file_editor"] == 1) $("#file_editor").show();
 			else $("#file_editor").hide();
+
+	var symbol = $.ajax({
+		url: "/symbol",
+		async: false
+	});
+	controller.promptLabel=symbol.responseText;
+
 			return [{msg: data["output"], className:"jquery-console-message-value"}]
 		},
 		autofocus: true,

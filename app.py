@@ -113,7 +113,22 @@ class ShellHandler(tornado.web.RequestHandler):
         pass
 
     def on_finish(self):
-        pass 
+        pass
+
+class PwdHandler(tornado.web.RequestHandler):
+    def get(self, *d):
+        global p
+        send_all(p, 'pwd\n')
+        time.sleep(0.02)
+        ret = recv_some(p)
+        retStr = ret.decode()[:-1] + "$ "
+        print(retStr)
+        self.write(retStr)
+        pass
+
+    def post(self):
+        pass
+
 '''
     配置URL映射关系
     /url : shell的每一行输入
@@ -122,6 +137,7 @@ class ShellHandler(tornado.web.RequestHandler):
 '''
 
 application = tornado.web.Application([
+    ("/symbol", PwdHandler),
     ("/tutorial/([0-9]+)", TutorialEditHandler),
     ("/shell", ShellHandler),    
     ("/save", FileSaveHandler),

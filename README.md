@@ -1,6 +1,6 @@
 # web-shell
 
-A browser-based, full-featured console
+A shell tutorial with web terminal
 
 ## Usage
 
